@@ -1,1 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Honza Clicker</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 2rem;
+    }
 
+    h1 {
+      font-size: 2em;
+    }
+
+    #honza-img {
+      width: 300px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .falling {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      z-index: 10;
+      animation: fall 1s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { top: 0; opacity: 1; }
+      100% { top: 100vh; opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Clicks: <span id="counter">0</span></h1>
+  <img id="honza-img" src="honza.jpg" alt="Honza">
+
+  <script>
+    let count = 0;
+    let imageIndex = 1;
+
+    const counterEl = document.getElementById('counter');
+    const honzaImg = document.getElementById('honza-img');
+
+    honzaImg.addEventListener('click', () => {
+      count++;
+      counterEl.textContent = count;
+
+      // Add falling golf image
+      const golf = document.createElement('img');
+      golf.src = 'golf.png';
+      golf.className = 'falling';
+      document.body.appendChild(golf);
+
+      // Remove after animation
+      setTimeout(() => golf.remove(), 1000);
+
+      // Every 100 clicks, reset counter and change image
+      if (count >= 100) {
+        count = 0;
+        counterEl.textContent = count;
+
+        if (imageIndex < 5) {
+          imageIndex++;
+          honzaImg.src = `honza${imageIndex}.jpg`;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
