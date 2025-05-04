@@ -23,7 +23,8 @@
     width: 300px;
     cursor: pointer;
     margin-top: 1rem;
-    transition: transform 0.05s;
+    transition: transform 0.05s linear;
+    will-change: transform;
   }
 
   .falling {
@@ -37,24 +38,6 @@
   @keyframes fall {
     0% { top: 0; opacity: 1; }
     100% { top: 100vh; opacity: 0; }
-  }
-
-  @keyframes ecstaticShake {
-    0%   { transform: translate(0px, 0px) rotate(0deg); }
-    10%  { transform: translate(-15px, 10px) rotate(8deg); }
-    20%  { transform: translate(10px, -15px) rotate(-8deg); }
-    30%  { transform: translate(-12px, 12px) rotate(10deg); }
-    40%  { transform: translate(12px, -10px) rotate(-10deg); }
-    50%  { transform: translate(-14px, 14px) rotate(9deg); }
-    60%  { transform: translate(14px, -14px) rotate(-9deg); }
-    70%  { transform: translate(-10px, 10px) rotate(7deg); }
-    80%  { transform: translate(10px, -12px) rotate(-7deg); }
-    90%  { transform: translate(-8px, 8px) rotate(5deg); }
-    100% { transform: translate(0px, 0px) rotate(0deg); }
-  }
-
-  .shaking {
-    animation: ecstaticShake 0.2s infinite;
   }
 </style>
 </head>
@@ -115,9 +98,16 @@
 
   function enterFinalForm() {
     isFinalForm = true;
-    honzaImg.classList.add('shaking');
 
-    // Chaos mode: spawn every 33ms (~30x per second!)
+    // Start randomized shake loop
+    setInterval(() => {
+      const dx = (Math.random() - 0.5) * 30; // range ~[-15, +15]
+      const dy = (Math.random() - 0.5) * 30;
+      const rot = (Math.random() - 0.5) * 20; // range ~[-10deg, +10deg]
+      honzaImg.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+    }, 60);
+
+    // Keep golf balls raining like chaos
     setInterval(() => {
       spawnGolfBall();
     }, 33);
