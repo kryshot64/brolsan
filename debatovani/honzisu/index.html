@@ -52,7 +52,7 @@
     document.body.removeChild(link);
   };
 </script>
-  <h1>Kliknutí ze sta: <span id="counter">0</span></h1>
+  <h1 id="title">Kliknutí ze sta: <span id="counter">0</span></h1>
   <img id="honza-img" src="honza.jpg" alt="Honza">
 
 <script>
@@ -107,11 +107,22 @@
       honzaImg.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
     }, 60);
 
-    // Keep golf balls raining like chaos
-    setInterval(() => {
-      spawnGolfBall();
-    }, 33);
-  }
+  // 🔁 Golf balls keep raining
+  setInterval(() => {
+    spawnGolfBall();
+  }, 33);
+
+  // 🔁 Update and shake the title
+  const title = document.getElementById('title');
+  title.textContent = "AFRIČAN FINAL FORM!!!";
+
+  setInterval(() => {
+    const dx = (Math.random() - 0.5) * 10;
+    const dy = (Math.random() - 0.5) * 10;
+    const rot = (Math.random() - 0.5) * 5;
+    title.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+  }, 80);
+}
 </script>
 </body>
 </html>
