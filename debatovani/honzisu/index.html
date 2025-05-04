@@ -5,40 +5,52 @@
       <title>BROLŠAN BUZERNAT</title>
       <link rel="icon" type="image/x-icon" href="kocicka.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      background-color: #f2f2f2;
-      margin: 0;
-      padding: 2rem;
-    }
+ <style>
+  body {
+    font-family: sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 2rem;
+    overflow-x: hidden;
+  }
 
-    h1 {
-      font-size: 2em;
-    }
+  h1 {
+    font-size: 2em;
+  }
 
-    #honza-img {
-      width: 300px;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
+  #honza-img {
+    width: 300px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: transform 0.1s;
+  }
 
-    .falling {
-      position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      z-index: 10;
-      animation: fall 1s linear forwards;
-    }
+  .falling {
+    position: fixed;
+    top: 0;
+    width: 80px;
+    z-index: 10;
+    animation: fall 1.5s linear forwards;
+  }
 
-    @keyframes fall {
-      0% { top: 0; opacity: 1; }
-      100% { top: 100vh; opacity: 0; }
-    }
-  </style>
+  @keyframes fall {
+    0% { top: 0; opacity: 1; }
+    100% { top: 100vh; opacity: 0; }
+  }
+
+  @keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(2deg); }
+    50% { transform: rotate(-2deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+  }
+
+  .shaking {
+    animation: shake 0.4s infinite;
+  }
+</style>
 </head>
 <body>
 <script>
@@ -54,38 +66,59 @@
   <h1>Kliknutí ze sta: <span id="counter">0</span></h1>
   <img id="honza-img" src="honza.jpg" alt="Honza">
 
-  <script>
-    let count = 0;
-    let imageIndex = 1;
+<script>
+  let count = 0;
+  let imageIndex = 1;
+  let isFinalForm = false;
+  const counterEl = document.getElementById('counter');
+  const honzaImg = document.getElementById('honza-img');
 
-    const counterEl = document.getElementById('counter');
-    const honzaImg = document.getElementById('honza-img');
+  honzaImg.addEventListener('click', () => {
+    if (isFinalForm) return; // disable click after final form
 
-    honzaImg.addEventListener('click', () => {
-      count++;
+    count++;
+    counterEl.textContent = count;
+
+    spawnGolfBall();
+
+    // Every 100 clicks, reset counter and change image
+    if (count >= 100) {
+      count = 0;
       counterEl.textContent = count;
 
-      // Add falling golf image
-      const golf = document.createElement('img');
-      golf.src = 'golf.png';
-      golf.className = 'falling';
-      document.body.appendChild(golf);
-
-      // Remove after animation
-      setTimeout(() => golf.remove(), 1000);
-
-      // Every 100 clicks, reset counter and change image
-      if (count >= 100) {
-        count = 0;
-        counterEl.textContent = count;
-
-        if (imageIndex < 5) {
-          imageIndex++;
-          honzaImg.src = `honza${imageIndex}.jpg`;
-        }
+      if (imageIndex < 5) {
+        imageIndex++;
+        honzaImg.src = `honza${imageIndex}.jpg`;
       }
-    });
-  </script>
 
+      if (imageIndex === 5) {
+        enterFinalForm();
+      }
+    }
+  });
+
+  function spawnGolfBall() {
+    const golf = document.createElement('img');
+    golf.src = 'golf.png';
+    golf.className = 'falling';
+
+    // Spawn at a random horizontal position (0 to 90vw)
+    const randomLeft = Math.random() * 90;
+    golf.style.left = `${randomLeft}vw`;
+
+    document.body.appendChild(golf);
+    setTimeout(() => golf.remove(), 2000);
+  }
+
+  function enterFinalForm() {
+    isFinalForm = true;
+    honzaImg.classList.add('shaking');
+
+    // Start auto-shower every 400ms
+    setInterval(() => {
+      spawnGolfBall();
+    }, 400);
+  }
+</script>
 </body>
 </html>
