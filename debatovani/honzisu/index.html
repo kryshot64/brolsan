@@ -5,7 +5,7 @@
       <title>BROLŠAN BUZERNAT</title>
       <link rel="icon" type="image/x-icon" href="kocicka.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <style>
+<style>
   body {
     font-family: sans-serif;
     text-align: center;
@@ -39,16 +39,17 @@
     100% { top: 100vh; opacity: 0; }
   }
 
-  @keyframes shake {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(2deg); }
-    50% { transform: rotate(-2deg); }
-    75% { transform: rotate(2deg); }
-    100% { transform: rotate(0deg); }
+  @keyframes intenseShake {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    20% { transform: translate(-10px, 5px) rotate(3deg); }
+    40% { transform: translate(10px, -5px) rotate(-3deg); }
+    60% { transform: translate(-7px, 7px) rotate(2deg); }
+    80% { transform: translate(7px, -7px) rotate(-2deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
   }
 
   .shaking {
-    animation: shake 0.4s infinite;
+    animation: intenseShake 0.3s infinite;
   }
 </style>
 </head>
@@ -74,14 +75,12 @@
   const honzaImg = document.getElementById('honza-img');
 
   honzaImg.addEventListener('click', () => {
-    if (isFinalForm) return; // disable click after final form
+    if (isFinalForm) return;
 
     count++;
     counterEl.textContent = count;
-
     spawnGolfBall();
 
-    // Every 100 clicks, reset counter and change image
     if (count >= 100) {
       count = 0;
       counterEl.textContent = count;
@@ -102,8 +101,8 @@
     golf.src = 'golf.png';
     golf.className = 'falling';
 
-    // Spawn at a random horizontal position (0 to 90vw)
-    const randomLeft = Math.random() * 90;
+    // Spawn at a random horizontal position (0 to 95vw)
+    const randomLeft = Math.random() * 95;
     golf.style.left = `${randomLeft}vw`;
 
     document.body.appendChild(golf);
@@ -114,10 +113,10 @@
     isFinalForm = true;
     honzaImg.classList.add('shaking');
 
-    // Start auto-shower every 400ms
+    // Much faster spawn: every 100ms
     setInterval(() => {
       spawnGolfBall();
-    }, 400);
+    }, 100);
   }
 </script>
 </body>
