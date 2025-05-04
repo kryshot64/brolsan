@@ -4,14 +4,43 @@
       <title>BROLŠAN BUZERNAT</title>
       <link rel="icon" type="image/x-icon" href="kocicka.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+    #music-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 80px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
 </head>
   
 <body>
+<audio id="music-player" src="hudba.mp3" preload="auto"></audio>
+ <img id="music-toggle" src="sabrina.jpg" alt="Toggle Music">
+  
   <div style="text-align: center;">
     <a href="honza.jpg" download="honza">
       <img src="kocicak.jpg" alt="Kocicanda" width="600" height="600">
     </a>
   </div>
+<script>
+    const player = document.getElementById("music-player");
+    const button = document.getElementById("music-toggle");
+
+    let isPlaying = false;
+
+    button.addEventListener("click", () => {
+      if (isPlaying) {
+        player.pause();
+      } else {
+        player.play();
+      }
+      isPlaying = !isPlaying;
+    });
+  </script>
+  
 </body>
   
 </html>
