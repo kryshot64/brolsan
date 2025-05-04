@@ -101,11 +101,11 @@
 
     // Start randomized shake loop
     setInterval(() => {
-      const dx = (Math.random() - 0.5) * 30; // range ~[-15, +15]
-      const dy = (Math.random() - 0.5) * 30;
-      const rot = (Math.random() - 0.5) * 20; // range ~[-10deg, +10deg]
+      const dx = (Math.random() - 0.5) * 120; // range ~[-15, +15]
+      const dy = (Math.random() - 0.5) * 80;
+      const rot = (Math.random() - 0.5) * 10; // range ~[-10deg, +10deg]
       honzaImg.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
-    }, 60);
+    }, 100);
 
     // Keep golf balls raining like chaos
     setInterval(() => {
