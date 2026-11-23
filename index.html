@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cobalt" data-dark="false">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>buzernat.cz</title>
+  <script>
+    /* Pre-paint theme sync to prevent FOUC on file:// */
+    (function () {
+      try {
+        var raw = localStorage.getItem('cae_bench_v1');
+        if (!raw) return;
+        var parsed = JSON.parse(raw);
+        var s = parsed && parsed.settings;
+        if (!s) return;
+        var themes = ['cobalt', 'emerald', 'amber', 'crimson', 'violet'];
+        if (s.dark === true) document.documentElement.setAttribute('data-dark', 'true');
+        if (themes.indexOf(s.theme) !== -1) document.documentElement.setAttribute('data-theme', s.theme);
+      } catch (_) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ================= TOP HEADER BAR ================= -->
+  <header class="topbar" id="app-header">
+    <div class="topbar-inner">
+      <div class="brand" id="brand-home" role="button" tabindex="0" aria-label="BUZERNAT Home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-title">BUZERNAT</span>
+        <span class="brand-tag">C1</span>
+      </div>
+
+      <div class="topbar-controls">
+        <div class="control-group" aria-label="Data Management">
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-import" title="Import backup (.json)">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 2.5v7.5M5 7l3 3 3-3M2.5 11.5v1.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1.5"/>
+            </svg>
+            <span>Import</span>
+          </button>
+          <input type="file" id="import-file-input" accept=".json,application/json" hidden>
+
+          <button type="button" class="btn btn-ghost btn-sm" id="btn-export" title="Export backup (.json)">
+            <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 10V2.5M5 5.5L8 2.5l3 3M2.5 11.5v1.5a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1.5"/>
+            </svg>
+            <span>Export</span>
+          </button>
+        </div>
+
+        <span class="topbar-divider" aria-hidden="true"></span>
+
+        <div class="theme-dots" id="theme-selector" role="radiogroup" aria-label="Accent color theme">
+          <button type="button" class="theme-dot" data-theme-pick="cobalt" aria-label="Cobalt theme" title="Cobalt" aria-checked="true"></button>
+          <button type="button" class="theme-dot" data-theme-pick="emerald" aria-label="Emerald theme" title="Emerald" aria-checked="false"></button>
+          <button type="button" class="theme-dot" data-theme-pick="amber" aria-label="Amber theme" title="Amber" aria-checked="false"></button>
+          <button type="button" class="theme-dot" data-theme-pick="crimson" aria-label="Crimson theme" title="Crimson" aria-checked="false"></button>
+          <button type="button" class="theme-dot" data-theme-pick="violet" aria-label="Violet theme" title="Violet" aria-checked="false"></button>
+        </div>
+
+        <button type="button" class="btn btn-icon" id="btn-dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" aria-pressed="false">
+          <svg class="icon icon-sun" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="8" cy="8" r="3"/>
+            <path d="M8 1.5v1.2M8 13.3v1.2M1.5 8h1.2M13.3 8h1.2M3.4 3.4l.85.85M11.75 11.75l.85.85M12.6 3.4l-.85.85M4.25 11.75l-.85.85"/>
+          </svg>
+          <svg class="icon icon-moon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M13.2 9.8A5.5 5.5 0 0 1 6.2 2.8a5.5 5.5 0 1 0 7 7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HUB VIEW ================= -->
+  <main class="view-hub" id="view-hub">
+    <div class="hub-container">
+      <!-- TOP: 3 Module Selection Cards -->
+      <section class="hub-modules" aria-label="Exam Modules">
+        <button type="button" class="module-card" data-open-module="uoe">
+          <div class="module-card-head">
+            <span class="module-code">PAPER 1A</span>
+            <span class="score-badge" id="badge-uoe">—</span>
+          </div>
+          <h2 class="module-title">USE OF ENGLISH</h2>
+          <p class="module-meta">Parts 1–4 · Cloze, Word Formation &amp; Key Word Transformations</p>
+          <div class="module-card-foot">
+            <span class="module-attempts" id="count-uoe">0 attempts</span>
+            <span class="module-launch">Open →</span>
+          </div>
+        </button>
+
+        <button type="button" class="module-card" data-open-module="reading">
+          <div class="module-card-head">
+            <span class="module-code">PAPER 1B</span>
+            <span class="score-badge" id="badge-reading">—</span>
+          </div>
+          <h2 class="module-title">READING</h2>
+          <p class="module-meta">Parts 5–8 · Multiple Choice, Cross-Text, Gapped Text &amp; Matching</p>
+          <div class="module-card-foot">
+            <span class="module-attempts" id="count-reading">0 attempts</span>
+            <span class="module-launch">Open →</span>
+          </div>
+        </button>
+
+        <button type="button" class="module-card" data-open-module="writing">
+          <div class="module-card-head">
+            <span class="module-code">PAPER 2</span>
+            <span class="score-badge" id="badge-writing">—</span>
+          </div>
+          <h2 class="module-title">WRITING</h2>
+          <p class="module-meta">Parts 1–2 · Compulsory Essay &amp; Situational Task with 4-Scale Rubric</p>
+          <div class="module-card-foot">
+            <span class="module-attempts" id="count-writing">0 attempts</span>
+            <span class="module-launch">Open →</span>
+          </div>
+        </button>
+      </section>
+
+      <!-- MIDDLE: Compact Recent Activity Table -->
+      <section class="hub-activity" aria-labelledby="activity-heading">
+        <div class="section-header">
+          <h3 id="activity-heading" class="section-title">RECENT ACTIVITY</h3>
+          <span class="section-meta mono" id="activity-count">0 records</span>
+        </div>
+
+        <div class="table-wrap">
+          <table class="activity-table" id="recent-activity-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Module</th>
+                <th>Scope</th>
+                <th class="num">Raw Score</th>
+                <th class="num">Cambridge Scale</th>
+                <th class="col-action" aria-label="Delete"></th>
+              </tr>
+            </thead>
+            <tbody id="recent-activity-body">
+              <tr class="empty-row">
+                <td colspan="6">No attempts recorded yet. Select a module above to load a test or demo.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- BOTTOM: Pinned Grade Projection Bar + Expandable Analysis Drawer -->
+    <aside class="grade-dock" id="grade-dock" aria-label="Grade Projection and Diagnostics">
+      <!-- Collapsible Analysis Drawer (collapsed by default) -->
+      <div class="analysis-drawer" id="analysis-drawer" hidden>
+        <div class="analysis-drawer-inner">
+          <div class="drawer-header">
+            <div>
+              <h3 class="drawer-title">PERFORMANCE DIAGNOSTICS</h3>
+              <p class="drawer-subtitle" id="drawer-summary-text">Weighted recency projection across attempted modules.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-advanced-analysis">
+              <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5.5 3.5h-2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-2"/>
+                <rect x="6" y="2" width="7.5" height="8" rx="1"/>
+              </svg>
+              <span>ADVANCED ANALYSIS</span>
+            </button>
+          </div>
+
+          <div class="drawer-grid">
+            <!-- Part Breakdowns -->
+            <div class="drawer-panel">
+              <h4 class="panel-label">USE OF ENGLISH · PARTS 1–4</h4>
+              <div class="part-list" id="breakdown-uoe"></div>
+            </div>
+
+            <div class="drawer-panel">
+              <h4 class="panel-label">READING · PARTS 5–8</h4>
+              <div class="part-list" id="breakdown-reading"></div>
+            </div>
+
+            <div class="drawer-panel">
+              <h4 class="panel-label">WRITING · 4 ASSESSMENT SCALES</h4>
+              <div class="part-list" id="breakdown-writing"></div>
+            </div>
+
+            <!-- Weakest Areas Ranked -->
+            <div class="drawer-panel drawer-panel-wide">
+              <h4 class="panel-label">WEAKEST AREAS RANKED BY ERROR RATE</h4>
+              <div class="weakness-list" id="weakest-areas-list">
+                <p class="muted-note">Complete at least one section to compute error-rate rankings.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Always-visible Pinned Projection Bar -->
+      <button type="button" class="grade-bar" id="grade-bar-toggle" aria-expanded="false" aria-controls="analysis-drawer">
+        <div class="grade-bar-inner">
+          <div class="grade-primary">
+            <span class="grade-eyebrow">PROJECTED SCALE</span>
+            <div class="grade-readout mono" id="grade-projection-readout">
+              <span class="grade-score">—</span>
+              <span class="grade-sep">·</span>
+              <span class="grade-label">No Data Yet</span>
+            </div>
+          </div>
+
+          <div class="grade-minibars" id="grade-minibars">
+            <div class="minibar-item" data-mini="uoe">
+              <div class="minibar-head">
+                <span>UoE</span>
+                <span class="mono" id="mini-val-uoe">—</span>
+              </div>
+              <div class="minibar-track"><div class="minibar-fill" id="mini-fill-uoe" style="width: 0%"></div></div>
+            </div>
+
+            <div class="minibar-item" data-mini="reading">
+              <div class="minibar-head">
+                <span>Reading</span>
+                <span class="mono" id="mini-val-reading">—</span>
+              </div>
+              <div class="minibar-track"><div class="minibar-fill" id="mini-fill-reading" style="width: 0%"></div></div>
+            </div>
+
+            <div class="minibar-item" data-mini="writing">
+              <div class="minibar-head">
+                <span>Writing</span>
+                <span class="mono" id="mini-val-writing">—</span>
+              </div>
+              <div class="minibar-track"><div class="minibar-fill" id="mini-fill-writing" style="width: 0%"></div></div>
+            </div>
+          </div>
+
+          <div class="grade-expand-cue">
+            <span class="expand-label">Analysis</span>
+            <svg class="icon chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 10l4-4 4 4"/>
+            </svg>
+          </div>
+        </div>
+      </button>
+    </aside>
+  </main>
+
+  <!-- ================= WORKSPACE VIEW ================= -->
+  <section class="view-workspace" id="view-workspace" hidden aria-label="Test Workspace">
+    <div class="ws-topbar">
+      <div class="ws-topbar-left">
+        <button type="button" class="btn btn-ghost btn-sm" id="ws-back-btn">← Back to Hub</button>
+        <span class="topbar-divider" aria-hidden="true"></span>
+        <h2 class="ws-title" id="ws-title">MODULE</h2>
+        <span class="ws-scope-pill mono" id="ws-scope-pill" hidden></span>
+      </div>
+
+      <div class="ws-topbar-right">
+        <div class="ws-timer mono" id="ws-timer" title="Click to pause or resume timer" role="button" tabindex="0">00:00</div>
+        <button type="button" class="btn btn-primary btn-sm" id="ws-top-action" hidden>Check Test</button>
+      </div>
+    </div>
+
+    <div class="ws-body" id="ws-body"></div>
+
+    <nav class="ws-bottom-nav" id="ws-bottom-nav" aria-label="Exam Parts" hidden></nav>
+  </section>
+
+  <!-- ================= OVERLAYS ================= -->
+  <div class="modal-root" id="modal-root" hidden aria-modal="true" role="dialog"></div>
+
+  <div class="hl-popover" id="hl-popover" hidden role="toolbar" aria-label="Highlight selection">
+    <button type="button" class="hl-pop-btn" data-hl-action="apply">Highlight</button>
+    <button type="button" class="hl-pop-btn hl-pop-clear" data-hl-action="remove" hidden>Remove</button>
+  </div>
+
+  <div class="toast-root" id="toast-root" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ================= SCRIPTS (STRICT LOAD ORDER, NO ES MODULES) ================= -->
+<script src="js/store.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/prompts.js"></script>
+  <script src="js/banks/uoe_bank.js"></script>
+  <script src="js/banks/reading_bank.js"></script>
+  <script src="js/banks/writing_bank.js"></script>
+  <script src="js/uoe.js"></script>
+  <script src="js/reading.js"></script>
+  <script src="js/writing.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => CAE.Core?.init());
+  </script>
+</body>
+</html>
