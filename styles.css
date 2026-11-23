@@ -1677,3 +1677,41 @@ html[data-dark="true"] .hl-pop-btn:hover {
 .writing-opt-btn.is-in-range .writing-opt-badge::before {
   background: var(--ok);
 }
+
+/* === RADICAL COMPLEMENTARY HIGHLIGHTERS === */
+
+/* Cobalt (Blue) -> Radioactive Yellow */
+html[data-theme="cobalt"] {
+  --hl-bg: #faff00;
+  --hl-text: #09090b;
+}
+
+/* Emerald (Green) -> Shock Magenta */
+html[data-theme="emerald"] {
+  --hl-bg: #ff007f;
+  --hl-text: #ffffff;
+}
+
+/* Amber (Orange/Gold) -> Electric Cyan */
+html[data-theme="amber"] {
+  --hl-bg: #00e5ff;
+  --hl-text: #09090b;
+}
+
+/* Crimson (Red) -> Laser Mint */
+html[data-theme="crimson"] {
+  --hl-bg: #00ff9d;
+  --hl-text: #09090b;
+}
+
+/* Violet (Purple) -> Acid Lime */
+html[data-theme="violet"] {
+  --hl-bg: #b8ff00;
+  --hl-text: #09090b;
+}
+
+/* Apply colors without touching geometry (preserves zero-reflow) */
+mark.cae-hl {
+  background: var(--hl-bg) !important;
+  color: var(--hl-text) !important;
+}
